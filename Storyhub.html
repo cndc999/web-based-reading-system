@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<!-- saved from url=(0065)file:///C:/Users/MR.%20QUANG%20ANH/Downloads/web-truyen-tree.html -->
+<html lang="vi"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>STORYHUB</title>
+    <style>
+        body { margin:0; font-family: Arial, Helvetica, sans-serif; background:#f2f2f2; }
+        header { background:#1e272e; color:#fff; padding:16px 24px; font-size:22px; }
+        .layout { display:flex; min-height:100vh; }
+        .sidebar { width:280px; background:#fff; border-right:1px solid #ddd; padding:20px; }
+        .sidebar h3 { margin-top:0; }
+        ul.tree { list-style:none; padding-left:15px; }
+        ul.tree li { margin:6px 0; }
+        ul.tree span { cursor:pointer; user-select:none; }
+        ul.tree span:hover { color:#0984e3; }
+        ul.tree ul { display:none; padding-left:18px; }
+        .content { flex:1; padding:25px; }
+        .story { background:#fff; padding:15px 18px; border-radius:6px; margin-bottom:15px;
+                 box-shadow:0 2px 4px rgba(0,0,0,0.05); }
+        .story h4 { margin:0 0 6px; }
+        .tag { display:inline-block; font-size:12px; background:#0984e3; color:#fff;
+               padding:4px 7px; border-radius:4px; }
+        .note { font-size:14px; color:#555; margin-bottom:20px; }
+        footer { text-align:center; font-size:13px; color:#777; padding:10px; }
+	.story img.cover {
+  	width: 360px;
+  	height: 360px;
+  	object-fit: cover;
+  	border-radius: 6px;
+ 	margin-bottom: 8px;
+	}
+	
+	/* Khu vực bắt đầu đọc */
+.reading-area {
+  margin-top: 40px;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 10px;
+  text-align: center;          
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* Ảnh đọc truyện */
+.reading-area img {
+  display: block;              
+  margin: 0 auto 14px;         
+  width: 600px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+    </style>
+</head>
+<body>
+
+<header>STORYHUB</header>
+
+<div class="layout">
+    <aside class="sidebar">
+        <h3>Thể loại</h3>
+        <ul class="tree">
+            <li>
+                <span onclick="toggle(this)">▶ Tiên Hiệp</span>
+                <ul style="display: block;">
+                    <li><span onclick="filterStory(&#39;tu-tien&#39;)">Tu Tiên</span></li>
+                    <li><span onclick="filterStory(&#39;huyen-huyen&#39;)">Huyền Huyễn</span></li>
+                </ul>
+            </li>
+            <li>
+                <span onclick="toggle(this)">▶ Ngôn Tình</span>
+                <ul style="display: none;">
+                    <li><span onclick="filterStory(&#39;co-dai&#39;)">Cổ Đại</span></li>
+                    <li><span onclick="filterStory(&#39;hien-dai&#39;)">Hiện Đại</span></li>
+                </ul>
+            </li>
+            <li><span onclick="filterStory(&#39;trinh-tham&#39;)">▶ Trinh Thám</span></li>
+            <li><span onclick="showAll()">▶ Tất cả</span></li>
+        </ul>
+    </aside>
+
+    <main class="content">
+        <h2>Danh sách truyện</h2>
+        <p class="note">
+            Hihi dòng này không biết để gì đừng đọc nhé.
+        </p>
+
+        <div class="story" data-category="tu-tien" style="display: block;">
+ 	<img src="images/cao-bang.png" class="cover">
+            <h4>Sử kí Cao Bằng</h4>
+            <p>Hành trình đến Yên Lãng</p>
+            <span class="tag">Giả Tưởng</span>
+        </div>
+
+        <div class="story" data-category="huyen-huyen" style="display: none;">
+            <h4>Đấu Phá Thương Khung</h4>
+            <p>Thế giới huyền huyễn với đấu khí và cường giả.</p>
+            <span class="tag">Huyền Huyễn</span>
+        </div>
+
+        <div class="story" data-category="co-dai" style="display: none;">
+            <h4>Đông Cung</h4>
+            <p>Câu chuyện tình yêu bi thương nơi cung đình.</p>
+            <span class="tag">Cổ Đại</span>
+        </div>
+
+        <div class="story" data-category="hien-dai" style="display: none;">
+            <h4>Bên Nhau Trọn Đời</h4>
+            <p>Chuyện tình nhẹ nhàng thời hiện đại.</p>
+            <span class="tag">Hiện Đại</span>
+        </div>
+
+        <div class="story" data-category="trinh-tham" style="display: none;">
+            <h4>Thám Tử Lừng Danh Conan</h4>
+            <p>Những vụ án trinh thám đầy logic.</p>
+            <span class="tag">Trinh Thám</span>
+        </div>
+	<!-- Reading area -->
+	<div class="reading-area">
+  	<img src="images/anh1.png" alt="Start reading">
+  	</div>
+
+    </main>
+</div>
+
+<footer>STORYHUB</footer>
+
+<script>
+function toggle(el){
+    const ul = el.nextElementSibling;
+    if(!ul) return;
+    ul.style.display = ul.style.display === "block" ? "none" : "block";
+}
+function filterStory(cat){
+    document.querySelectorAll('.story').forEach(s=>{
+        s.style.display = (s.dataset.category === cat) ? "block" : "none";
+    });
+}
+function showAll(){
+    document.querySelectorAll('.story').forEach(s=> s.style.display = "block");
+}
+</script>
+
+
+
+</body></html>
