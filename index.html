@@ -164,27 +164,9 @@
 <footer>STORYHUB</footer>
 
 <script>
-function toggle(el){
-    const ul = el.nextElementSibling;
-    if(!ul) return;
-    ul.style.display = ul.style.display === "block" ? "none" : "block";
-}
-function filterStory(cat){
-    document.querySelectorAll('.story').forEach(s=>{
-        s.style.display = (s.dataset.category === cat) ? "block" : "none";
-    });
-}
-function showAll(){
-    document.querySelectorAll('.story').forEach(s=> s.style.display = "block");
-}
-</script>
-
-
-<script>
   const searchInput = document.getElementById("searchInput");
   const categorySelect = document.getElementById("categorySelect");
 
-  
   function normalizeText(text) {
     return (text || "")
       .toLowerCase()
@@ -198,23 +180,20 @@ function showAll(){
 
     document.querySelectorAll(".story").forEach(story => {
       const category = story.dataset.category || "";
-      const titleEl = story.querySelector("h4");
-      const title = normalizeText(titleEl ? titleEl.textContent : "");
+      const title = normalizeText(story.querySelector("h4")?.textContent);
 
       const matchName = keyword === "" || title.includes(keyword);
-      const matchCategory =
-        selectedCategory === "tat-ca" || category === selectedCategory;
+      const matchCategory = selectedCategory === "tat-ca" || category === selectedCategory;
 
       story.style.display = (matchName && matchCategory) ? "block" : "none";
     });
   }
 
-  
   searchInput.addEventListener("input", applyFilters);
   categorySelect.addEventListener("change", applyFilters);
 
-  
   applyFilters();
 </script>
+
 
 </body></html>
