@@ -193,15 +193,15 @@
       <p>Hành trình đến Lãng Yên</p>
       <span class="tag">Tu Tiên</span>
       <div class="chapter-select">
-    <label for="chapter-tu-tien">Chọn chương:</label>
-    <select id="chapter-tu-tien" onchange="loadChapterImages('tu-tien', this)">
-  <option value="">-- Chọn chương --</option>
-  <option value="chap1">Chapter 1</option>
-  <option value="chap2">Chapter 2</option>
-  <option value="chap3">Chapter 3</option>
-</select>
+  <label>Chọn chương:</label>
+  <select class="chapter-dropdown" data-story="tu-tien">
+    <option value="">-- Chọn chương --</option>
+    <option value="./assets/img/tu-tien/chap1.png">Chapter 1</option>
+    <option value="./assets/img/tu-tien/chap2.png">Chapter 2</option>
+  </select>
 </div>
-    <div class="story-content" id="content-tu-tien" style="display:none;"></div>
+
+<div class="story-content" data-story="tu-tien" style="display:none;"></div>
 
     </div>
     
