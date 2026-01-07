@@ -311,43 +311,41 @@ function goChapter(select) {
       window.location.href = url;
     }
   }
-  <script>
-  const storyChapters = {
-    "tu-tien": {
-      "chap1": [
-        "./assets/img/tu-tien/chap1.png"
-      ],
-      "chap2": [
-        "./assets/img/tu-tien/chap2.png"
-      ],
-      "chap3": [
-        "./assets/img/tu-tien/chap3.png"
-      ]
-    }
-  };
+ 
+  function showImages(storyKey, imageList) {
+  const box = document.querySelector(`.story-content[data-story="${storyKey}"]`);
+  if (!box) return;
 
-  function loadChapterImages(storyKey, selectEl) {
-    const chapKey = selectEl.value;
-    const box = document.getElementById("content-" + storyKey);
-
-    if (!chapKey) {
-      box.innerHTML = "";
-      box.style.display = "none";
-      return;
-    }
-
-    const imgs = (storyChapters[storyKey] && storyChapters[storyKey][chapKey]) || [];
-    if (imgs.length === 0) {
-      box.innerHTML = "<p>Chưa có ảnh cho chương này.</p>";
-      box.style.display = "block";
-      return;
-    }
-
-    box.innerHTML = imgs.map(src => `<img src="${src}" class="content-img" alt="">`).join("");
-    box.style.display = "block";
+  if (!imageList || imageList.length === 0) {
+    box.innerHTML = "";
+    box.style.display = "none";
+    return;
   }
-</script>
 
+  box.innerHTML = imageList
+    .map(src => `<img src="${src}" class="content-img" alt="">`)
+    .join("");
+
+  box.style.display = "block";
+}
+
+document.addEventListener("change", (e) => {
+  const select = e.target;
+  if (!select.classList.contains("chapter-dropdown")) return;
+
+  const storyKey = select.dataset.story;
+  const value = (select.value || "").trim();
+
+  if (!value) {
+    showImages(storyKey, []);
+    return;
+  }
+
+ ng"
+  const images = value.split("|").map(s => s.trim()).filter(Boolean);
+
+  showImages(storyKey, images);
+});
 </script>
 
 </body>
