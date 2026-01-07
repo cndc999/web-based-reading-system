@@ -223,16 +223,19 @@ header.top-bar .logo{
     applyFilters();
   }
 
-  function showAll() {
-    categorySelect.value = "tat-ca";
-    applyFilters();
-  }
-
   function toggle(el) {
-    const ul = el.parentElement.querySelector("ul");
-    if (!ul) return;
-    ul.style.display = (ul.style.display === "block") ? "none" : "block";
+  const ul = el.parentElement.querySelector("ul");
+  if (!ul) return;
+
+  const isOpen = ul.style.display === "block";
+  ul.style.display = isOpen ? "none" : "block";
+
+  if (el.textContent.includes("▶")) {
+    el.textContent = el.textContent.replace("▶", "▼");
+  } else if (el.textContent.includes("▼")) {
+    el.textContent = el.textContent.replace("▼", "▶");
   }
+}
 
   
   window.filterStory = filterStory;
