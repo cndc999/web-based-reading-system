@@ -128,6 +128,23 @@
   margin: 24px auto;
   border-radius: 10px;
 }
+    .chapter-select {
+  margin-top: 12px;
+}
+
+.chapter-select label {
+  font-size: 14px;
+  margin-right: 8px;
+}
+
+.chapter-select select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  cursor: pointer;
+}
+
 
   </style>
 </head>
@@ -175,6 +192,15 @@
       <h4>Xuyên không thành cường giả</h4>
       <p>Hành trình đến Lãng Yên</p>
       <span class="tag">Tu Tiên</span>
+      <div class="chapter-select">
+    <label for="chapter-tu-tien">Chọn chương:</label>
+    <select id="chapter-tu-tien" onchange="goChapter(this)">
+      <option value="">-- Chọn chương --</option>
+      <option value="read/tu-tien/chap1.html">Chương 1</option>
+      <option value="read/tu-tien/chap2.html">Chương 2</option>
+      <option value="read/tu-tien/chap3.html">Chương 3</option>
+    </select>
+</div>
     </div>
 
     <div class="story" data-category="huyen-huyen">
