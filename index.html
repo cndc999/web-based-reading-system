@@ -194,16 +194,15 @@
       <span class="tag">Tu Tiên</span>
       <div class="chapter-select">
     <label for="chapter-tu-tien">Chọn chương:</label>
-    <select id="chapter-tu-tien" onchange="goChapter(this)">
-      <option value="">-- Chọn chương --</option>
-      <option value="/web-based-reading-system/read/tu-tien/chap1.html">Chapter 1</option>
-      <option value="/web-based-reading-system/read/tu-tien/chap2.html">Chapter 2</option>
-      <option value="/web-based-reading-system/read/tu-tien/chap3.html">Chapter 3</option>
-    </select>
-    </div>
-    <div class="story-content">
-    <img src="./assets/img/tu-tien/chap1.png" class="content-img">
-    </div>
+    <select id="chapter-tu-tien" onchange="loadChapterImages('tu-tien', this)">
+  <option value="">-- Chọn chương --</option>
+  <option value="chap1">Chapter 1</option>
+  <option value="chap2">Chapter 2</option>
+  <option value="chap3">Chapter 3</option>
+</select>
+</div>
+    <div class="story-content" id="content-tu-tien" style="display:none;"></div>
+
     </div>
     
     
@@ -312,6 +311,43 @@ function goChapter(select) {
       window.location.href = url;
     }
   }
+  <script>
+  const storyChapters = {
+    "tu-tien": {
+      "chap1": [
+        "./assets/img/tu-tien/chap1.png"
+      ],
+      "chap2": [
+        "./assets/img/tu-tien/chap2.png"
+      ],
+      "chap3": [
+        "./assets/img/tu-tien/chap3.png"
+      ]
+    }
+  };
+
+  function loadChapterImages(storyKey, selectEl) {
+    const chapKey = selectEl.value;
+    const box = document.getElementById("content-" + storyKey);
+
+    if (!chapKey) {
+      box.innerHTML = "";
+      box.style.display = "none";
+      return;
+    }
+
+    const imgs = (storyChapters[storyKey] && storyChapters[storyKey][chapKey]) || [];
+    if (imgs.length === 0) {
+      box.innerHTML = "<p>Chưa có ảnh cho chương này.</p>";
+      box.style.display = "block";
+      return;
+    }
+
+    box.innerHTML = imgs.map(src => `<img src="${src}" class="content-img" alt="">`).join("");
+    box.style.display = "block";
+  }
+</script>
+
 </script>
 
 </body>
