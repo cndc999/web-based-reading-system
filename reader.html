@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>STORYHUB - Reader</title>
+
+  <style>
+    body { margin:0; font-family: Arial, Helvetica, sans-serif; background:#f2f2f2; }
+    .layout { display:flex; min-height:100vh; }
+
+    header.top-bar {
+      background:#1e272e;
+      color:#fff;
+      padding:12px 16px;
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+
+    header.top-bar .logo {
+      font-size:22px;
+      font-weight:700;
+      letter-spacing:0.5px;
+      white-space:nowrap;
+      cursor:pointer;
+    }
+
+    .topbar-search{ display:flex; width:100%; max-width:520px; }
+    #searchInput{
+      flex:1;
+      padding:8px 10px;
+      border:1px solid #ddd;
+      border-radius:8px;
+      outline:none;
+    }
+
+    .sidebar {
+      width:280px;
+      background:#fff;
+      border-right:1px solid #ddd;
+      padding:20px;
+    }
+    .sidebar h3 { margin-top:0; }
+    ul.tree { list-style:none; padding-left:15px; }
+    ul.tree li { margin:6px 0; }
+    ul.tree span { cursor:pointer; user-select:none; }
+    ul.tree span:hover { color:#0984e3; }
+    ul.tree ul { display:none; padding-left:18px; }
+
+    .content { flex:1; padding:25px; }
+
+    .reader-box{
+      background:#fff;
+      padding:15px 18px;
+      border-radius:10px;
+      box-shadow:0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .reader-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+
+    .reader-title{
+      margin:0;
+      font-size:18px;
+      font-weight:700;
+    }
+
+    .chapter-select { display:flex; align-items:center; gap:8px; }
+    .chapter-select label { font-size:14px; }
+    .chapter-select select{
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .pages img{
+      display:block;
+      width:100%;
+      max-width:900px;
+      margin:0 auto 12px;
+      border-radius:10px;
+    }
+
+    footer { text-align:center; font-size:13px; color:#777; padding:10px; }
+  </style>
+</head>
+
+<body>
+
+<header class="top-bar">
+  <div class="logo" onclick="goHome()">STORYHUB</div>
+  <div class="topbar-search">
+    <input id="searchInput" type="text" placeholder="Trang đọc truyện" disabled>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <h3>Thể loại</h3>
+    <ul class="tree">
+      <li>
+        <span onclick="toggle(this)">▶ Tiên Hiệp</span>
+        <ul>
+          <li><span onclick="goStory('tu-tien')">Tu Tiên</span></li>
+        </ul>
+      </li>
+      <li><span onclick="goHome()">▶ Về trang chủ</span></li>
+    </ul>
+  </aside>
+
+  <main class="content">
+    <div class="reader-box">
+      <div class="reader-top">
+        <h2 class="reader-title" id="readerTitle">Đang tải...</h2>
+
+        <div class="chapter-select">
+          <label for="chapterSelect">Chọn chương:</label>
+          <select id="chapterSelect"></select>
+        </div>
+      </div>
+
+      <div class="pages" id="pages"></div>
+    </div>
+  </main>
+</div>
+
+<footer>STORYHUB</footer>
+
+<script>
+  const LIB = {
+    "tu-tien": {
+      name: "Xuyên không thành cường giả",
+      chapters: {
+        "chap1": ["./assets/img/tu-tien/chap1.png"],
+        "chap2": ["./assets/img/tu-tien/chap2.png"]
+      }
+    }
+  };
+
+  function qs(name){
+    return new URLSearchParams(window.location.search).get(name) || "";
+  }
+
+  function goHome(){
+    window.location.href = "index.html";
+  }
+
+  function goStory(storyKey){
+    const firstChap = LIB[storyKey] ? Object.keys(LIB[storyKey].chapters)[0] : "";
+    if (!firstChap) return goHome();
+    window.location.href = `reader.html?story=${encodeURIComponent(storyKey)}&chap=${encodeURIComponent(firstChap)}`;
+  }
+
+  function toggle(el) {
+    const ul = el.parentElement.querySelector("ul");
+    if (!ul) return;
+    const isOpen = ul.style.display === "block";
+    ul.style.display = isOpen ? "none" : "block";
+    el.textContent = isOpen
+      ? el.textContent.replace("▼", "▶")
+      : el.textContent.replace("▶", "▼");
+  }
+
+  function render(storyKey, chapKey){
+    const story = LIB[storyKey];
+    const titleEl = document.getElementById("readerTitle");
+    const pagesEl = document.getElementById("pages");
+    const selectEl = document.getElementById("chapterSelect");
+
+    if (!story) {
+      titleEl.textContent = "Không tìm thấy truyện";
+      pagesEl.innerHTML = "";
+      return;
+    }
+
+    const chapKeys = Object.keys(story.chapters);
+    selectEl.innerHTML = chapKeys.map(k => `<option value="${k}">${k.replace("chap","Chapter ")}</option>`).join("");
+
+    selectEl.value = chapKeys.includes(chapKey) ? chapKey : chapKeys[0];
+    const chosen = selectEl.value;
+
+    titleEl.textContent = `${story.name} - ${chosen.replace("chap","Chapter ")}`;
+
+    const images = story.chapters[chosen] || [];
+    pagesEl.innerHTML = images.map(src => `<img src="${src}" alt="">`).join("");
+  }
+
+  document.getElementById("chapterSelect").addEventListener("change", (e) => {
+    const storyKey = qs("story");
+    const chapKey = e.target.value;
+    window.location.href = `reader.html?story=${encodeURIComponent(storyKey)}&chap=${encodeURIComponent(chapKey)}`;
+  });
+
+  render(qs("story"), qs("chap"));
+
+  window.goHome = goHome;
+  window.toggle = toggle;
+  window.goStory = goStory;
+</script>
+
+</body>
+</html>
