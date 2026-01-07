@@ -61,6 +61,8 @@
       border-radius:6px;
       margin-bottom:15px;
       box-shadow:0 2px 4px rgba(0,0,0,0.05);
+      overflow:hidden;
+      position:relative;
     }
 
     .story h4 { margin:0 0 6px; }
@@ -74,20 +76,45 @@
       border-radius:4px;
     }
 
-    .story img.cover {
+    .story .cover { display:none; }
+
+    .story.has-cover .cover {
+      display:block;
       width:360px;
       height:360px;
       object-fit:cover;
       border-radius:6px;
       margin-bottom:8px;
+      float:none !important;
+      position:static !important;
     }
 
     .note { font-size:14px; color:#555; margin-bottom:20px; }
-    .story { overflow: hidden; }
-.story .cover { display: block; }
 
+    .reading-area {
+      margin-top:40px;
+      padding:30px;
+      background:#ffffff;
+      border-radius:10px;
+      text-align:center;
+      box-shadow:0 2px 8px rgba(0,0,0,0.06);
+    }
 
-    
+    .reading-area img {
+      display:block;
+      margin:0 auto 14px;
+      width:600px;
+      max-width:100%;
+      height:auto;
+      border-radius:10px;
+    }
+
+    footer {
+      text-align:center;
+      font-size:13px;
+      color:#777;
+      padding:10px;
+    }
   </style>
 </head>
 
@@ -129,8 +156,8 @@
     <h2>Danh sách truyện</h2>
     <p class="note">Designed by CN x Bamkeii.</p>
 
-    <div class="story" data-category="tu-tien">
-      <img src="./assets/img/cao-bang.png" class="cover">
+    <div class="story has-cover" data-category="tu-tien">
+      <img src="./assets/img/cao-bang.png" class="cover" alt="cover">
       <h4>Xuyên không thành cường giả</h4>
       <p>Hành trình đến Lãng Yên</p>
       <span class="tag">Tu Tiên</span>
@@ -191,15 +218,15 @@
     const keyword = normalizeText(searchInput.value);
 
     document.querySelectorAll(".story").forEach(story => {
-      const title = normalizeText(story.querySelector("h4").textContent);
-      const tag = normalizeText(story.querySelector(".tag").textContent);
-      const cat = story.dataset.category;
-      const catText = categoryLabel[cat] || cat;
+      const title = normalizeText(story.querySelector("h4")?.textContent);
+      const tag = normalizeText(story.querySelector(".tag")?.textContent);
+      const cat = story.dataset.category || "";
+      const catText = categoryLabel[cat] || normalizeText(cat);
 
       const match =
         keyword === "" ||
-        title.includes(keyword) ||
-        tag.includes(keyword) ||
+        (title && title.includes(keyword)) ||
+        (tag && tag.includes(keyword)) ||
         catText.includes(keyword);
 
       story.style.display = match ? "block" : "none";
