@@ -165,15 +165,14 @@
 
       <div class="chapter-select">
         <label>Chọn chương:</label>
-        <select class="chapter-dropdown" data-story="tu-tien">
-          <option value="">-- Chọn chương --</option>
-          <option value="./assets/img/tu-tien/chap1.png">Chapter 1</option>
-          <option value="./assets/img/tu-tien/chap2.png">Chapter 2</option>
-        </select>
-      </div>
+    <select class="chapter-dropdown" data-story="tu-tien" onchange="goReader(this)">
+  <option value="">-- Chọn chương --</option>
+  <option value="chap1">Chapter 1</option>
+  <option value="chap2">Chapter 2</option>
+  </select>
 
-      <div class="story-content" data-story="tu-tien" style="display:none;"></div>
-    </div>
+  </div>
+  </div>
 
     <div class="story" data-category="huyen-huyen">
       <h4>Đấu Phá Thương Khung</h4>
@@ -263,38 +262,7 @@
       : el.textContent.replace("▶", "▼");
   }
 
-  function showImages(storyKey, imageList) {
-    const box = document.querySelector(`.story-content[data-story="${storyKey}"]`);
-    if (!box) return;
-
-    if (!imageList || imageList.length === 0) {
-      box.innerHTML = "";
-      box.style.display = "none";
-      return;
-    }
-
-    box.innerHTML = imageList
-      .map(src => `<img src="${src}" class="content-img" alt="">`)
-      .join("");
-
-    box.style.display = "block";
-  }
-
-  document.addEventListener("change", (e) => {
-    const select = e.target;
-    if (!select.classList.contains("chapter-dropdown")) return;
-
-    const storyKey = select.dataset.story;
-    const value = (select.value || "").trim();
-
-    if (!value) {
-      showImages(storyKey, []);
-      return;
-    }
-
-    const images = value.split("|").map(s => s.trim()).filter(Boolean);
-    showImages(storyKey, images);
-  });
+ 
 
   window.filterStory = filterStory;
   window.showAll = showAll;
@@ -302,6 +270,17 @@
 
   searchInput.addEventListener("input", applyFilters);
   applyFilters();
+  function goReader(selectEl) {
+  const chap = selectEl.value;
+  if (!chap) return;
+
+  const story = selectEl.dataset.story;
+  window.location.href = `reader.html?story=${encodeURIComponent(story)}&chap=${encodeURIComponent(chap)}`;
+
+  selectEl.value = "";
+}
+window.goReader = goReader;
+
 </script>
 
 </body>
