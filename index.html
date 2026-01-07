@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <title>STORYHUB - Reader</title>
+  <meta charset="UTF-8">
+  <title>STORYHUB</title>
 
   <style>
     body { margin:0; font-family: Arial, Helvetica, sans-serif; background:#f2f2f2; }
@@ -22,7 +22,6 @@
       font-weight:700;
       letter-spacing:0.5px;
       white-space:nowrap;
-      cursor:pointer;
     }
 
     .topbar-search {
@@ -56,30 +55,45 @@
 
     .content { flex:1; padding:25px; }
 
-    .reader-box{
+    .story {
       background:#fff;
-      padding:18px;
-      border-radius:10px;
+      padding:15px 18px;
+      border-radius:6px;
+      margin-bottom:15px;
       box-shadow:0 2px 4px rgba(0,0,0,0.05);
     }
 
-    .reader-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-bottom:14px;
+    .story h4 { margin:0 0 6px; }
+
+    .tag {
+      display:inline-block;
+      font-size:12px;
+      background:#0984e3;
+      color:#fff;
+      padding:4px 7px;
+      border-radius:4px;
     }
 
-    .reader-title{
-      font-size:18px;
-      font-weight:700;
-      margin:0;
+    .story img.cover {
+      width:360px;
+      height:360px;
+      object-fit:cover;
+      border-radius:6px;
+      margin-bottom:8px;
+      display:block;
     }
 
-    .chapter-select { display:flex; align-items:center; gap:8px; }
-    .chapter-select label { font-size:14px; }
+    .note { font-size:14px; color:#555; margin-bottom:20px; }
+
+    footer {
+      text-align:center;
+      font-size:13px;
+      color:#777;
+      padding:10px;
+    }
+
+    .chapter-select { margin-top: 12px; }
+    .chapter-select label { font-size: 14px; margin-right: 8px; }
     .chapter-select select {
       padding: 6px 10px;
       border-radius: 6px;
@@ -88,21 +102,19 @@
       cursor: pointer;
     }
 
-    .pages img{
-      display:block;
-      width:100%;
-      max-width:900px;
-      margin:0 auto 12px;
-      border-radius:10px;
+ 
+    .story-content {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed #ddd;
     }
 
-    .hint { color:#777; font-size:14px; }
-
-    footer {
-      text-align:center;
-      font-size:13px;
-      color:#777;
-      padding:10px;
+    .story-content .content-img {
+      display:block;
+      width:100%;
+      max-width: 720px;
+      margin: 0 auto 12px;
+      border-radius: 10px;
     }
   </style>
 </head>
@@ -110,9 +122,9 @@
 <body>
 
 <header class="top-bar">
-  <div class="logo" onclick="goHome()">STORYHUB</div>
+  <div class="logo">STORYHUB</div>
   <div class="topbar-search">
-    <input id="searchInput" type="text" placeholder="Trang đọc (ô này để sau cũng được)" disabled>
+    <input id="searchInput" type="text" placeholder="Tìm theo tên truyện hoặc thể loại...">
   </div>
 </header>
 
@@ -123,74 +135,127 @@
       <li>
         <span onclick="toggle(this)">▶ Tiên Hiệp</span>
         <ul>
-          <li><span onclick="goToStory('tu-tien')">Tu Tiên</span></li>
-          <li><span onclick="goToStory('huyen-huyen')">Huyền Huyễn</span></li>
+          <li><span onclick="filterStory('tu-tien')">Tu Tiên</span></li>
+          <li><span onclick="filterStory('huyen-huyen')">Huyền Huyễn</span></li>
         </ul>
       </li>
 
       <li>
         <span onclick="toggle(this)">▶ Ngôn Tình</span>
         <ul>
-          <li><span onclick="goToStory('co-dai')">Cổ Đại</span></li>
-          <li><span onclick="goToStory('hien-dai')">Hiện Đại</span></li>
+          <li><span onclick="filterStory('co-dai')">Cổ Đại</span></li>
+          <li><span onclick="filterStory('hien-dai')">Hiện Đại</span></li>
         </ul>
       </li>
 
-      <li><span onclick="goToStory('trinh-tham')">▶ Trinh Thám</span></li>
-      <li><span onclick="goHome()">▶ Về trang chính</span></li>
+      <li><span onclick="filterStory('trinh-tham')">▶ Trinh Thám</span></li>
+      <li><span onclick="showAll()">▶ Tất cả</span></li>
     </ul>
   </aside>
 
   <main class="content">
-    <div class="reader-box">
-      <div class="reader-top">
-        <h2 class="reader-title" id="readerTitle">Đang tải...</h2>
+    <h2>Danh sách truyện</h2>
+    <p class="note">Designed by CN x Bamkeii.</p>
 
-        <div class="chapter-select">
-          <label for="chapterSelect">Chọn chương:</label>
-          <select id="chapterSelect"></select>
-        </div>
+    <div class="story" data-category="tu-tien">
+      <img src="./assets/img/cover/cao-bang.png" class="cover" alt="cover">
+      <h4>Xuyên không thành cường giả</h4>
+      <p>Hành trình đến Lãng Yên</p>
+      <span class="tag">Tu Tiên</span>
+
+      <div class="chapter-select">
+        <label>Chọn chương:</label>
+        <select class="chapter-dropdown" data-story="tu-tien">
+          <option value="">-- Chọn chương --</option>
+          <option value="./assets/img/tu-tien/chap1.png">Chapter 1</option>
+          <option value="./assets/img/tu-tien/chap2.png">Chapter 2</option>
+        </select>
       </div>
 
-      <div class="pages" id="pages"></div>
-      <div class="hint" id="hint"></div>
+      <div class="story-content" data-story="tu-tien" style="display:none;"></div>
     </div>
+
+    <div class="story" data-category="huyen-huyen">
+      <h4>Đấu Phá Thương Khung</h4>
+      <p>Thế giới huyền huyễn với đấu khí và cường giả.</p>
+      <span class="tag">Huyền Huyễn</span>
+    </div>
+
+    <div class="story" data-category="co-dai">
+      <h4>Đông Cung</h4>
+      <p>Câu chuyện tình yêu bi thương nơi cung đình.</p>
+      <span class="tag">Cổ Đại</span>
+    </div>
+
+    <div class="story" data-category="hien-dai">
+      <h4>Bên Nhau Trọn Đời</h4>
+      <p>Chuyện tình nhẹ nhàng thời hiện đại.</p>
+      <span class="tag">Hiện Đại</span>
+    </div>
+
+    <div class="story" data-category="trinh-tham">
+      <h4>Thám Tử Lừng Danh Conan</h4>
+      <p>Những vụ án trinh thám đầy logic.</p>
+      <span class="tag">Trinh Thám</span>
+    </div>
+
   </main>
 </div>
 
 <footer>STORYHUB</footer>
 
 <script>
-  
-  const LIB = {
-    "tu-tien": {
-      name: "Xuyên không thành cường giả",
-      chapters: {
-        "chap1": ["./assets/img/tu-tien/chap1.png"],
-        "chap2": ["./assets/img/tu-tien/chap2.png"]
-      }
-    }
-    
+  const searchInput = document.getElementById("searchInput");
+
+  const categoryLabel = {
+    "tu-tien": "tu tien",
+    "huyen-huyen": "huyen huyen",
+    "co-dai": "co dai",
+    "hien-dai": "hien dai",
+    "trinh-tham": "trinh tham"
   };
 
-  function qs(name){
-    return new URLSearchParams(window.location.search).get(name) || "";
+  function normalizeText(text) {
+    return (text || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim();
   }
 
-  function goHome(){
-    window.location.href = "index.html";
+  function applyFilters() {
+    const keyword = normalizeText(searchInput.value);
+
+    document.querySelectorAll(".story").forEach(story => {
+      const title = normalizeText(story.querySelector("h4").textContent);
+      const tag = normalizeText(story.querySelector(".tag").textContent);
+      const cat = story.dataset.category;
+      const catText = categoryLabel[cat] || cat;
+
+      const match =
+        keyword === "" ||
+        title.includes(keyword) ||
+        tag.includes(keyword) ||
+        catText.includes(keyword);
+
+      story.style.display = match ? "block" : "none";
+    });
   }
 
-  function goToStory(storyKey){
-    // nếu story có chương, nhảy sang chap đầu tiên cho tiện
-    const firstChap = LIB[storyKey] ? Object.keys(LIB[storyKey].chapters)[0] : "";
-    if (!firstChap) return goHome();
-    window.location.href = `reader.html?story=${encodeURIComponent(storyKey)}&chap=${encodeURIComponent(firstChap)}`;
+  function filterStory(category) {
+    searchInput.value = categoryLabel[category] || category;
+    applyFilters();
+  }
+
+  function showAll() {
+    searchInput.value = "";
+    applyFilters();
   }
 
   function toggle(el) {
     const ul = el.parentElement.querySelector("ul");
     if (!ul) return;
+
     const isOpen = ul.style.display === "block";
     ul.style.display = isOpen ? "none" : "block";
     el.textContent = isOpen
@@ -198,46 +263,45 @@
       : el.textContent.replace("▶", "▼");
   }
 
-  function render(storyKey, chapKey){
-    const titleEl = document.getElementById("readerTitle");
-    const pagesEl = document.getElementById("pages");
-    const hintEl = document.getElementById("hint");
-    const selectEl = document.getElementById("chapterSelect");
+  function showImages(storyKey, imageList) {
+    const box = document.querySelector(`.story-content[data-story="${storyKey}"]`);
+    if (!box) return;
 
-    const story = LIB[storyKey];
-    if (!story) {
-      titleEl.textContent = "Không tìm thấy truyện";
-      pagesEl.innerHTML = "";
-      hintEl.textContent = "Hãy quay về trang chính và chọn lại.";
+    if (!imageList || imageList.length === 0) {
+      box.innerHTML = "";
+      box.style.display = "none";
       return;
     }
 
-    // build dropdown chương
-    const chapKeys = Object.keys(story.chapters);
-    selectEl.innerHTML = chapKeys.map(k => `<option value="${k}">${k.replace("chap","Chapter ")}</option>`).join("");
-    selectEl.value = chapKeys.includes(chapKey) ? chapKey : chapKeys[0];
+    box.innerHTML = imageList
+      .map(src => `<img src="${src}" class="content-img" alt="">`)
+      .join("");
 
-    const chosen = selectEl.value;
-    const images = story.chapters[chosen] || [];
-
-    titleEl.textContent = `${story.name} - ${chosen.replace("chap","Chapter ")}`;
-    pagesEl.innerHTML = images.map(src => `<img src="${src}" alt="">`).join("");
-    hintEl.textContent = images.length ? "" : "Chương này chưa có ảnh.";
+    box.style.display = "block";
   }
 
- 
-  document.getElementById("chapterSelect").addEventListener("change", (e) => {
-    const storyKey = qs("story");
-    const chapKey = e.target.value;
-    window.location.href = `reader.html?story=${encodeURIComponent(storyKey)}&chap=${encodeURIComponent(chapKey)}`;
+  document.addEventListener("change", (e) => {
+    const select = e.target;
+    if (!select.classList.contains("chapter-dropdown")) return;
+
+    const storyKey = select.dataset.story;
+    const value = (select.value || "").trim();
+
+    if (!value) {
+      showImages(storyKey, []);
+      return;
+    }
+
+    const images = value.split("|").map(s => s.trim()).filter(Boolean);
+    showImages(storyKey, images);
   });
 
-  
-  render(qs("story"), qs("chap"));
-
-  window.goHome = goHome;
+  window.filterStory = filterStory;
+  window.showAll = showAll;
   window.toggle = toggle;
-  window.goToStory = goToStory;
+
+  searchInput.addEventListener("input", applyFilters);
+  applyFilters();
 </script>
 
 </body>
