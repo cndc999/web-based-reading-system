@@ -170,7 +170,7 @@ header.top-bar .logo{
             <p>Những vụ án trinh thám đầy logic.</p>
             <span class="tag">Trinh Thám</span>
         </div>
-	<!-- Reading area -->
+	
 	<div class="reading-area">
   	<img src="./assets/img/anh1.png" alt="Start reading">
 
@@ -185,6 +185,7 @@ header.top-bar .logo{
   const searchInput = document.getElementById("searchInput");
   const categorySelect = document.getElementById("categorySelect");
 
+ 
   function normalizeText(text) {
     return (text || "")
       .toLowerCase()
@@ -201,17 +202,43 @@ header.top-bar .logo{
       const title = normalizeText(story.querySelector("h4")?.textContent);
 
       const matchName = keyword === "" || title.includes(keyword);
-      const matchCategory = selectedCategory === "tat-ca" || category === selectedCategory;
+      const matchCategory =
+        selectedCategory === "tat-ca" || category === selectedCategory;
 
       story.style.display = (matchName && matchCategory) ? "block" : "none";
     });
   }
 
+  
   searchInput.addEventListener("input", applyFilters);
   categorySelect.addEventListener("change", applyFilters);
 
+  
+  function filterStory(category) {
+    categorySelect.value = category;   n
+    applyFilters();
+  }
+
+  function showAll() {
+    categorySelect.value = "tat-ca";
+    applyFilters();
+  }
+
+  function toggle(el) {
+    const ul = el.parentElement.querySelector("ul");
+    if (!ul) return;
+    ul.style.display = (ul.style.display === "block") ? "none" : "block";
+  }
+
+  
+  window.filterStory = filterStory;
+  window.showAll = showAll;
+  window.toggle = toggle;
+
+  // chạy lần đầu
   applyFilters();
 </script>
+
 
 
 </body></html>
