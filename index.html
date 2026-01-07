@@ -189,7 +189,6 @@ header.top-bar .logo{
   const searchInput = document.getElementById("searchInput");
   const categorySelect = document.getElementById("categorySelect");
 
- 
   function normalizeText(text) {
     return (text || "")
       .toLowerCase()
@@ -213,36 +212,41 @@ header.top-bar .logo{
     });
   }
 
-  
+ 
   searchInput.addEventListener("input", applyFilters);
   categorySelect.addEventListener("change", applyFilters);
 
-  
+ 
   function filterStory(category) {
-    categorySelect.value = category;   n
+    categorySelect.value = category;  
+    applyFilters();
+  }
+
+  function showAll() {
+    categorySelect.value = "tat-ca";
     applyFilters();
   }
 
   function toggle(el) {
-  const ul = el.parentElement.querySelector("ul");
-  if (!ul) return;
+    const ul = el.parentElement.querySelector("ul");
+    if (!ul) return;
 
-  const isOpen = ul.style.display === "block";
-  ul.style.display = isOpen ? "none" : "block";
+    const isOpen = ul.style.display === "block";
+    ul.style.display = isOpen ? "none" : "block";
 
-  if (el.textContent.includes("▶")) {
-    el.textContent = el.textContent.replace("▶", "▼");
-  } else if (el.textContent.includes("▼")) {
-    el.textContent = el.textContent.replace("▼", "▶");
+    if (el.textContent.includes("▶")) {
+      el.textContent = el.textContent.replace("▶", "▼");
+    } else if (el.textContent.includes("▼")) {
+      el.textContent = el.textContent.replace("▼", "▶");
+    }
   }
-}
 
   
   window.filterStory = filterStory;
   window.showAll = showAll;
   window.toggle = toggle;
 
-  // chạy lần đầu
+  
   applyFilters();
 </script>
 
