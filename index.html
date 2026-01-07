@@ -80,33 +80,41 @@
       object-fit:cover;
       border-radius:6px;
       margin-bottom:8px;
+      display:block;
     }
 
     .note { font-size:14px; color:#555; margin-bottom:20px; }
-
-    .reading-area {
-      margin-top:40px;
-      padding:30px;
-      background:#ffffff;
-      border-radius:10px;
-      text-align:center;
-      box-shadow:0 2px 8px rgba(0,0,0,0.06);
-    }
-
-    .reading-area img {
-      display:block;
-      margin:0 auto 14px;
-      width:600px;
-      max-width:100%;
-      height:auto;
-      border-radius:10px;
-    }
 
     footer {
       text-align:center;
       font-size:13px;
       color:#777;
       padding:10px;
+    }
+
+    .chapter-select { margin-top: 12px; }
+    .chapter-select label { font-size: 14px; margin-right: 8px; }
+    .chapter-select select {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* ✅ Ảnh chương nằm trong box truyện (không tạo layout riêng) */
+    .story-content {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed #ddd;
+    }
+
+    .story-content .content-img {
+      display:block;
+      width:100%;
+      max-width: 720px;
+      margin: 0 auto 12px;
+      border-radius: 10px;
     }
   </style>
 </head>
@@ -150,10 +158,21 @@
     <p class="note">Designed by CN x Bamkeii.</p>
 
     <div class="story" data-category="tu-tien">
-      <img src="./assets/img/cover/cao-bang.png" class="cover">
+      <img src="./assets/img/cover/cao-bang.png" class="cover" alt="cover">
       <h4>Xuyên không thành cường giả</h4>
       <p>Hành trình đến Lãng Yên</p>
       <span class="tag">Tu Tiên</span>
+
+      <div class="chapter-select">
+        <label>Chọn chương:</label>
+        <select class="chapter-dropdown" data-story="tu-tien">
+          <option value="">-- Chọn chương --</option>
+          <option value="./assets/img/tu-tien/chap1.png">Chapter 1</option>
+          <option value="./assets/img/tu-tien/chap2.png">Chapter 2</option>
+        </select>
+      </div>
+
+      <div class="story-content" data-story="tu-tien" style="display:none;"></div>
     </div>
 
     <div class="story" data-category="huyen-huyen">
@@ -180,9 +199,6 @@
       <span class="tag">Trinh Thám</span>
     </div>
 
-    <div class="reading-area">
-      <img src="./assets/img/anh1.png" alt="Start reading">
-    </div>
   </main>
 </div>
 
@@ -226,8 +242,6 @@
     });
   }
 
-  searchInput.addEventListener("input", applyFilters);
-
   function filterStory(category) {
     searchInput.value = categoryLabel[category] || category;
     applyFilters();
@@ -249,10 +263,44 @@
       : el.textContent.replace("▶", "▼");
   }
 
+  function showImages(storyKey, imageList) {
+    const box = document.querySelector(`.story-content[data-story="${storyKey}"]`);
+    if (!box) return;
+
+    if (!imageList || imageList.length === 0) {
+      box.innerHTML = "";
+      box.style.display = "none";
+      return;
+    }
+
+    box.innerHTML = imageList
+      .map(src => `<img src="${src}" class="content-img" alt="">`)
+      .join("");
+
+    box.style.display = "block";
+  }
+
+  document.addEventListener("change", (e) => {
+    const select = e.target;
+    if (!select.classList.contains("chapter-dropdown")) return;
+
+    const storyKey = select.dataset.story;
+    const value = (select.value || "").trim();
+
+    if (!value) {
+      showImages(storyKey, []);
+      return;
+    }
+
+    const images = value.split("|").map(s => s.trim()).filter(Boolean);
+    showImages(storyKey, images);
+  });
+
   window.filterStory = filterStory;
   window.showAll = showAll;
   window.toggle = toggle;
 
+  searchInput.addEventListener("input", applyFilters);
   applyFilters();
 </script>
 
