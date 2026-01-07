@@ -61,8 +61,6 @@
       border-radius:6px;
       margin-bottom:15px;
       box-shadow:0 2px 4px rgba(0,0,0,0.05);
-      overflow:hidden;
-      position:relative;
     }
 
     .story h4 { margin:0 0 6px; }
@@ -76,17 +74,12 @@
       border-radius:4px;
     }
 
-    .story .cover { display:none; }
-
-    .story.has-cover .cover {
-      display:block;
+    .story img.cover {
       width:360px;
       height:360px;
       object-fit:cover;
       border-radius:6px;
       margin-bottom:8px;
-      float:none !important;
-      position:static !important;
     }
 
     .note { font-size:14px; color:#555; margin-bottom:20px; }
@@ -156,8 +149,8 @@
     <h2>Danh sách truyện</h2>
     <p class="note">Designed by CN x Bamkeii.</p>
 
-    <div class="story has-cover" data-category="tu-tien">
-      <img src="./assets/img/cao-bang.png" class="cover" alt="cover">
+    <div class="story" data-category="tu-tien">
+      <img src="./assets/img/cao-bang.png" class="cover">
       <h4>Xuyên không thành cường giả</h4>
       <p>Hành trình đến Lãng Yên</p>
       <span class="tag">Tu Tiên</span>
@@ -218,15 +211,15 @@
     const keyword = normalizeText(searchInput.value);
 
     document.querySelectorAll(".story").forEach(story => {
-      const title = normalizeText(story.querySelector("h4")?.textContent);
-      const tag = normalizeText(story.querySelector(".tag")?.textContent);
-      const cat = story.dataset.category || "";
-      const catText = categoryLabel[cat] || normalizeText(cat);
+      const title = normalizeText(story.querySelector("h4").textContent);
+      const tag = normalizeText(story.querySelector(".tag").textContent);
+      const cat = story.dataset.category;
+      const catText = categoryLabel[cat] || cat;
 
       const match =
         keyword === "" ||
-        (title && title.includes(keyword)) ||
-        (tag && tag.includes(keyword)) ||
+        title.includes(keyword) ||
+        tag.includes(keyword) ||
         catText.includes(keyword);
 
       story.style.display = match ? "block" : "none";
