@@ -92,15 +92,25 @@
       padding:10px;
     }
 
-    .chapter-select { margin-top: 12px; }
-    .chapter-select label { font-size: 14px; margin-right: 8px; }
-    .chapter-select select {
-      padding: 6px 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-      cursor: pointer;
-    }
+    .chapter-selector {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+
+  background: rgba(20, 20, 20, 0.85);
+  padding: 8px 12px;
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
+}
+
+.chapter-selector select {
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 8px;
+}
+
 
  
     .story-content {
