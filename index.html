@@ -92,26 +92,15 @@
       padding:10px;
     }
 
-  .chapter-selector{
-  position: fixed;
-  left: 50%;
-  bottom: 12px;
-  transform: translateX(-50%);
-  z-index: 999999;
-
-  background: rgba(20,20,20,0.85);
-  padding: 8px 12px;
-  border-radius: 14px;
-  backdrop-filter: blur(6px);
-}
-
-.chapter-dropdown{
-  font-size: 14px;
-  padding: 6px 10px;
-  border-radius: 8px;
-  outline: none;
-}
-
+    .chapter-select { margin-top: 12px; }
+    .chapter-select label { font-size: 14px; margin-right: 8px; }
+    .chapter-select select {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      cursor: pointer;
+    }
 
  
     .story-content {
@@ -174,7 +163,7 @@
       <p>Hành trình đến Lãng Yên</p>
       <span class="tag">Tu Tiên</span>
 
-      <div class="chapter-selector">
+      <div class="chapter-select">
         <label>Chọn chương:</label>
     <select class="chapter-dropdown" data-story="tu-tien" onchange="goReader(this)">
   <option value="">-- Chọn chương --</option>
