@@ -10,8 +10,26 @@
         "./assets/img/tu-tien/chap1/pic1.jpg"
       ],
       "chap2": [
-        "./assets/img/tu-tien/chap2.png"
+        "./assets/img/tu-tien/chap2/C2P1.jpg"
       ]
     }
   }
+}
+
+{
+  "id": "414611",
+  "title": "Sử kí Cao Bằng",
+  "description": "Câu truyện về một chú chó",
+  "category": "Tu Tiên",
+  "cover": "\"C:\\Users\\MR. QUANG ANH\\Downloads\\pic1.jpg\"",
+  "chapters": {}
+}
+
+{
+  "id": "414611",
+  "title": "Sử kí Cao Bằng",
+  "description": "Câu truyện về một chú chó",
+  "category": "Tu Tiên",
+  "cover": ""C:\Users\MR. QUANG ANH\Downloads\C2P1.jpg""",
+  "chapters": {}
 }
