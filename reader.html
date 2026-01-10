@@ -32,8 +32,18 @@ async function loadStories(){
 function render(){
   const storyKey = qs("story");
   const chapKey = qs("chap");
-  const story = STORIES[storyKey];
+  if (!storyKey || !chapKey) {
+    document.getElementById("title").textContent =
+      "Thiếu thông tin truyện";
+    return;
+  }
 
+  const story = STORIES[storyKey];
+  if (!story) {
+    document.getElementById("title").textContent =
+      "Không tìm thấy truyện";
+    return;
+  }
   if (!story) return;
 
   document.getElementById("title").textContent =
