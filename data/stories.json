@@ -1,0 +1,17 @@
+{
+  "tu-tien": {
+    "id": "tu-tien",
+    "title": "Xuyên không thành cường giả",
+    "description": "Hành trình đến Lãng Yên",
+    "category": "Tiên Hiệp",
+    "cover": "./assets/img/cover/cao-bang.png",
+    "chapters": {
+      "chap1": [
+        "./assets/img/tu-tien/chap1/pic1.jpg"
+      ],
+      "chap2": [
+        "./assets/img/tu-tien/chap2.png"
+      ]
+    }
+  }
+}
